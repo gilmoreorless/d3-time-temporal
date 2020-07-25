@@ -1,4 +1,5 @@
 import interval from "./interval.js";
+import diff from "./diff.js";
 
 var year = interval(function(dateTime) {
   return dateTime.with({ month: 1, day: 1, hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0, nanosecond: 0 });
@@ -6,7 +7,7 @@ var year = interval(function(dateTime) {
   if (step < 0) return dateTime.minus({ years: -step });
   return dateTime.plus({ years: step });
 }, function(start, end) {
-  return end.difference(start).years;
+  return diff(start, end, 'years');
 }, function(dateTime) {
   return dateTime.year;
 });
