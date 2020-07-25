@@ -2,43 +2,46 @@ var tape = require("tape"),
     time = require("../"),
     date = require("./date");
 
-tape("timeInterval() is equivalent to timeInterval.floor(new Date)", function(test) {
-  var t = new Date;
+const { Temporal } = require("proposal-temporal");
+
+tape("timeInterval() is equivalent to timeInterval.floor(Temporal.now.dateTime())", function(test) {
+  var t = Temporal.now.dateTime();
   test.deepEqual(time.timeYear(), time.timeYear.floor(t));
   test.end();
 });
 
 tape("timeInterval(date) is equivalent to timeInterval.floor(date)", function(test) {
-  var t = new Date;
+  var t = Temporal.now.dateTime();
   test.deepEqual(time.timeYear(t), time.timeYear.floor(t));
   test.end();
 });
 
 tape("timeInterval(floor, offset) returns a custom time interval", function(test) {
-  var i = time.timeInterval(function(date) {
-    date.setUTCMinutes(0, 0, 0);
-  }, function(date, step) {
-    date.setUTCHours(date.getUTCHours() + step);
+  var i = time.timeInterval(function(dateTime) {
+    return dateTime.with({ minute: 0, second: 0, millisecond: 0, microsecond: 0, nanosecond: 0 });
+  }, function(dateTime, step) {
+    return dateTime.plus({ hours: step });
   });
   test.deepEqual(i(date.utc(2015, 0, 1, 12, 34, 56, 789)), date.utc(2015, 0, 1, 12));
   test.end();
 });
 
 tape("timeInterval(floor, offset) does not define a count method", function(test) {
-  var i = time.timeInterval(function(date) {
-    date.setUTCMinutes(0, 0, 0);
-  }, function(date, step) {
-    date.setUTCHours(date.getUTCHours() + step);
+  var i = time.timeInterval(function(dateTime) {
+    return dateTime.with({ minute: 0, second: 0, millisecond: 0, microsecond: 0, nanosecond: 0 });
+  }, function(dateTime, step) {
+    return dateTime.plus({ hours: step });
   });
   test.ok(!("count" in i));
   test.end();
 });
 
 tape("timeInterval(floor, offset) floors the step before passing it to offset", function(test) {
-  var steps = [], i = time.timeInterval(function(date) {
-    date.setUTCMinutes(0, 0, 0);
-  }, function(date, step) {
-    steps.push(+step), date.setUTCHours(date.getUTCHours() + step);
+  var steps = [], i = time.timeInterval(function(dateTime) {
+    return dateTime.with({ minute: 0, second: 0, millisecond: 0, microsecond: 0, nanosecond: 0 });
+  }, function(dateTime, step) {
+    steps.push(+step)
+    return dateTime.plus({ hours: step });
   });
   test.deepEqual(i.offset(date.utc(2015, 0, 1, 12, 34, 56, 789), 1.5), date.utc(2015, 0, 1, 13, 34, 56, 789));
   test.deepEqual(i.range(date.utc(2015, 0, 1, 12), date.utc(2015, 0, 1, 15), 1.5), [date.utc(2015, 0, 1, 12), date.utc(2015, 0, 1, 13), date.utc(2015, 0, 1, 14)]);
@@ -47,24 +50,25 @@ tape("timeInterval(floor, offset) floors the step before passing it to offset", 
 });
 
 tape("timeInterval(floor, offset, count) defines a count method", function(test) {
-  var i = time.timeInterval(function(date) {
-    date.setUTCMinutes(0, 0, 0);
-  }, function(date, step) {
-    date.setUTCHours(date.getUTCHours() + step);
+  var i = time.timeInterval(function(dateTime) {
+    return dateTime.with({ minute: 0, second: 0, millisecond: 0, microsecond: 0, nanosecond: 0 });
+  }, function(dateTime, step) {
+    return dateTime.plus({ hours: step });
   }, function(start, end) {
-    return (end - start) / 36e5;
+    return end.difference(start).hours;
   });
   test.equal(i.count(date.utc(2015, 0, 1, 12, 34), date.utc(2015, 0, 1, 15, 56)), 3);
   test.end();
 });
 
 tape("timeInterval(floor, offset, count) floors dates before passing them to count", function(test) {
-  var dates = [], i = time.timeInterval(function(date) {
-    date.setUTCMinutes(0, 0, 0);
+  var dates = [], i = time.timeInterval(function(dateTime) {
+    return dateTime.with({ minute: 0, second: 0, millisecond: 0, microsecond: 0, nanosecond: 0 });
   }, function(date, step) {
     date.setUTCHours(date.getUTCHours() + step);
   }, function(start, end) {
-    return dates.push(new Date(+start), new Date(+end)), (end - start) / 36e5;
+    dates.push(start, end);
+    return end.difference(start).hours;
   });
   i.count(date.utc(2015, 0, 1, 12, 34), date.utc(2015, 0, 1, 15, 56));
   test.deepEqual(dates, [date.utc(2015, 0, 1, 12), date.utc(2015, 0, 1, 15)]);

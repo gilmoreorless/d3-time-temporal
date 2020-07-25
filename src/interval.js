@@ -1,59 +1,66 @@
-var t0 = new Date,
-    t1 = new Date;
+const { Temporal } = require("proposal-temporal");
 
 export default function newInterval(floori, offseti, count, field) {
 
-  function interval(date) {
-    return floori(date = arguments.length === 0 ? new Date : new Date(+date)), date;
+  function interval(dateTime) {
+    return floori(arguments.length === 0 ? Temporal.now.dateTime() : dateTime);
   }
 
-  interval.floor = function(date) {
-    return floori(date = new Date(+date)), date;
+  interval.floor = function(dateTime) {
+    return floori(dateTime);
   };
 
-  interval.ceil = function(date) {
-    return floori(date = new Date(date - 1)), offseti(date, 1), floori(date), date;
+  interval.ceil = function(dateTime) {
+    var dt = dateTime.minus({ nanoseconds: 1 });
+    return offseti(floori(dt), 1);
   };
 
-  interval.round = function(date) {
-    var d0 = interval(date),
-        d1 = interval.ceil(date);
-    return date - d0 < d1 - date ? d0 : d1;
+  interval.round = function(dateTime) {
+    var base = interval(dateTime);
+    var d0 = dateTime.difference(base),
+        d1 = interval.ceil(dateTime).difference(dateTime);
+    // NOTE: Why no Duration compare? https://github.com/tc39/proposal-temporal/issues/608
+    var comp = Temporal.DateTime.compare(base.plus(d0), base.plus(d1));
+    return comp < 0 ? d0 : d1;
   };
 
-  interval.offset = function(date, step) {
-    return offseti(date = new Date(+date), step == null ? 1 : Math.floor(step)), date;
+  interval.offset = function(dateTime, step) {
+    return offseti(dateTime, step == null ? 1 : Math.floor(step));
   };
 
   interval.range = function(start, stop, step) {
     var range = [], previous;
+    if (!(start instanceof Temporal.DateTime) || !(stop instanceof Temporal.DateTime)) return range;
     start = interval.ceil(start);
     step = step == null ? 1 : Math.floor(step);
-    if (!(start < stop) || !(step > 0)) return range; // also handles Invalid Date
-    do range.push(previous = new Date(+start)), offseti(start, step), floori(start);
-    while (previous < start && start < stop);
+    if (Temporal.DateTime.compare(start, stop) >= 0 || !(step > 0)) return range;
+    previous = start;
+    do {
+      range.push(previous);
+      previous = floori(offseti(previous, step));
+    } while (Temporal.DateTime.compare(previous, stop) < 0);
     return range;
   };
 
   interval.filter = function(test) {
-    return newInterval(function(date) {
-      if (date >= date) while (floori(date), !test(date)) date.setTime(date - 1);
-    }, function(date, step) {
-      if (date >= date) {
-        if (step < 0) while (++step <= 0) {
-          while (offseti(date, -1), !test(date)) {} // eslint-disable-line no-empty
-        } else while (--step >= 0) {
-          while (offseti(date, +1), !test(date)) {} // eslint-disable-line no-empty
-        }
+    return newInterval(function(dateTime) {
+      var dt = dateTime;
+      while (!test(dt = floori(dt))) dt = dt.minus({ nanoseconds: 1 });
+      return dt;
+    }, function(dateTime, step) {
+      var dt = dateTime;
+      if (step < 0) while (++step <= 0) {
+        while (dt = offseti(dt, -1), !test(dt)) {} // eslint-disable-line no-empty
+      } else while (--step >= 0) {
+        while (dt = offseti(dt, +1), !test(dt)) {} // eslint-disable-line no-empty
       }
+      return dt;
     });
   };
 
   if (count) {
     interval.count = function(start, end) {
-      t0.setTime(+start), t1.setTime(+end);
-      floori(t0), floori(t1);
-      return Math.floor(count(t0, t1));
+      return Math.floor(count(floori(start), floori(end)));
     };
 
     interval.every = function(step) {
