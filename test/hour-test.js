@@ -118,23 +118,24 @@ tape("timeHour.range(start, stop) can skip hours", function(test) {
   test.end();
 });
 
-tape("timeHour.range(start, stop) observes start of daylight savings time", function(test) {
-  test.deepEqual(time.timeHour.range(date.local(2011, 2, 13, 1), date.local(2011, 2, 13, 5)), [
-    date.utc(2011, 2, 13, 9),
-    date.utc(2011, 2, 13, 10),
-    date.utc(2011, 2, 13, 11)
-  ]);
-  test.end();
-});
+// DISABLED: Irrelevant when using Temporal.DateTime
+// tape("timeHour.range(start, stop) observes start of daylight savings time", function(test) {
+//   test.deepEqual(time.timeHour.range(date.local(2011, 2, 13, 1), date.local(2011, 2, 13, 5)), [
+//     date.utc(2011, 2, 13, 9),
+//     date.utc(2011, 2, 13, 10),
+//     date.utc(2011, 2, 13, 11)
+//   ]);
+//   test.end();
+// });
 
-tape("timeHour.range(start, stop) observes end of daylight savings time", function(test) {
-  test.deepEqual(time.timeHour.range(date.local(2011, 10, 6, 0), date.local(2011, 10, 6, 2)), [
-    date.utc(2011, 10, 6, 7),
-    date.utc(2011, 10, 6, 8),
-    date.utc(2011, 10, 6, 9)
-  ]);
-  test.end();
-});
+// tape("timeHour.range(start, stop) observes end of daylight savings time", function(test) {
+//   test.deepEqual(time.timeHour.range(date.local(2011, 10, 6, 0), date.local(2011, 10, 6, 2)), [
+//     date.utc(2011, 10, 6, 7),
+//     date.utc(2011, 10, 6, 8),
+//     date.utc(2011, 10, 6, 9)
+//   ]);
+//   test.end();
+// });
 
 tape("timeHour.every(step) returns every stepth hour, starting with the first hour of the day", function(test) {
   test.deepEqual(time.timeHour.every(4).range(date.local(2008, 11, 30, 12, 47), date.local(2008, 11, 31, 13, 57)), [date.local(2008, 11, 30, 16), date.local(2008, 11, 30, 20), date.local(2008, 11, 31, 0), date.local(2008, 11, 31, 4), date.local(2008, 11, 31, 8), date.local(2008, 11, 31, 12)]);
@@ -142,12 +143,13 @@ tape("timeHour.every(step) returns every stepth hour, starting with the first ho
   test.end();
 });
 
-tape("timeHour.range(start, stop) returns every hour crossing the daylight savings boundary", function(test) {
-  test.deepEqual(time.timeHour.range(new Date(1478422800000 - 2 * 36e5), new Date(1478422800000 + 2 * 36e5)), [
-    new Date(1478415600000), // Sun Nov 06 2016 00:00:00 GMT-0700 (PDT)
-    new Date(1478419200000), // Sun Nov 06 2016 01:00:00 GMT-0700 (PDT)
-    new Date(1478422800000), // Sun Nov 06 2016 01:00:00 GMT-0800 (PDT)
-    new Date(1478426400000)  // Sun Nov 06 2016 02:00:00 GMT-0800 (PDT)
-  ]);
-  test.end();
-});
+// DISABLED: Irrelevant when using Temporal.DateTime
+// tape("timeHour.range(start, stop) returns every hour crossing the daylight savings boundary", function(test) {
+//   test.deepEqual(time.timeHour.range(new Date(1478422800000 - 2 * 36e5), new Date(1478422800000 + 2 * 36e5)), [
+//     new Date(1478415600000), // Sun Nov 06 2016 00:00:00 GMT-0700 (PDT)
+//     new Date(1478419200000), // Sun Nov 06 2016 01:00:00 GMT-0700 (PDT)
+//     new Date(1478422800000), // Sun Nov 06 2016 01:00:00 GMT-0800 (PDT)
+//     new Date(1478426400000)  // Sun Nov 06 2016 02:00:00 GMT-0800 (PDT)
+//   ]);
+//   test.end();
+// });
