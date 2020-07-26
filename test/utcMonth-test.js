@@ -86,7 +86,7 @@ tape("utcMonth.offset(date) is an alias for utcMonth.offset(date, 1)", function(
 
 tape("utcMonth.offset(date, step) does not modify the passed-in date", function(test) {
   var d = date.utc(2010, 11, 31, 23, 59, 59, 999);
-  time.utcMonth.offset(date, +1);
+  time.utcMonth.offset(d, +1);
   test.deepEqual(d, date.utc(2010, 11, 31, 23, 59, 59, 999));
   test.end();
 });
@@ -98,7 +98,7 @@ tape("utcMonth.offset(date, step) does not round the passed-in date", function(t
 });
 
 tape("utcMonth.offset(date, step) allows step to be negative", function(test) {
-  test.deepEqual(time.utcMonth.offset(date.utc(2010, 11, 31), -1), date.utc(2010, 10, 31));
+  test.deepEqual(time.utcMonth.offset(date.utc(2010, 11, 31), -1), date.utc(2010, 10, 30));
   test.deepEqual(time.utcMonth.offset(date.utc(2011, 00, 01), -2), date.utc(2010, 10, 01));
   test.deepEqual(time.utcMonth.offset(date.utc(2011, 00, 01), -1), date.utc(2010, 11, 01));
   test.end();
@@ -106,7 +106,7 @@ tape("utcMonth.offset(date, step) allows step to be negative", function(test) {
 
 tape("utcMonth.offset(date, step) allows step to be positive", function(test) {
   test.deepEqual(time.utcMonth.offset(date.utc(2010, 11, 31), +1), date.utc(2011, 00, 31));
-  test.deepEqual(time.utcMonth.offset(date.utc(2010, 11, 30), +2), date.utc(2011, 01, 30));
+  test.deepEqual(time.utcMonth.offset(date.utc(2010, 11, 30), +2), date.utc(2011, 01, 28));
   test.deepEqual(time.utcMonth.offset(date.utc(2010, 11, 30), +1), date.utc(2011, 00, 30));
   test.end();
 });
@@ -141,19 +141,21 @@ tape("utcMonth.range(start, stop) returns months", function(test) {
   test.end();
 });
 
-tape("utcMonth.range(start, stop) coerces start and stop to dates", function(test) {
-  test.deepEqual(time.utcMonth.range(+date.utc(2011, 10, 04), +date.utc(2012, 01, 07)), [
-    date.utc(2011, 11, 01),
-    date.utc(2012, 00, 01),
-    date.utc(2012, 01, 01)
-  ]);
-  test.end();
-});
+// DISABLED: I'm not doing coercion in this experiment
+// tape("utcMonth.range(start, stop) coerces start and stop to dates", function(test) {
+//   test.deepEqual(time.utcMonth.range(+date.utc(2011, 10, 04), +date.utc(2012, 01, 07)), [
+//     date.utc(2011, 11, 01),
+//     date.utc(2012, 00, 01),
+//     date.utc(2012, 01, 01)
+//   ]);
+//   test.end();
+// });
 
-tape("utcMonth.range(start, stop) returns the empty array for invalid dates", function(test) {
-  test.deepEqual(time.utcMonth.range(new Date(NaN), Infinity), []);
-  test.end();
-});
+// DISABLED: Temporal doesn't allow invalid dates like NaN
+// tape("utcMonth.range(start, stop) returns the empty array for invalid dates", function(test) {
+//   test.deepEqual(time.utcMonth.range(new Date(NaN), Infinity), []);
+//   test.end();
+// });
 
 tape("utcMonth.range(start, stop) returns the empty array if start >= stop", function(test) {
   test.deepEqual(time.utcMonth.range(date.utc(2011, 11, 10), date.utc(2011, 10, 04)), []);
@@ -162,7 +164,7 @@ tape("utcMonth.range(start, stop) returns the empty array if start >= stop", fun
 });
 
 tape("utcMonth.range(start, stop) returns months", function(test) {
-  test.deepEqual(time.utcMonth.range(date.utc(2010, 10, 31), date.utc(2011, 2, 1)), [
+  test.deepEqual(time.utcMonth.range(date.utc(2010, 10, 30), date.utc(2011, 2, 1)), [
     date.utc(2010, 11, 1),
     date.utc(2011, 0, 1),
     date.utc(2011, 1, 1)
@@ -171,12 +173,12 @@ tape("utcMonth.range(start, stop) returns months", function(test) {
 });
 
 tape("utcMonth.range(start, stop) has an inclusive lower bound", function(test) {
-  test.deepEqual(time.utcMonth.range(date.utc(2010, 10, 31), date.utc(2011, 2, 1))[0], date.utc(2010, 11, 1));
+  test.deepEqual(time.utcMonth.range(date.utc(2010, 10, 30), date.utc(2011, 2, 1))[0], date.utc(2010, 11, 1));
   test.end();
 });
 
 tape("utcMonth.range(start, stop) has an exclusive upper bound", function(test) {
-  test.deepEqual(time.utcMonth.range(date.utc(2010, 10, 31), date.utc(2011, 2, 1))[2], date.utc(2011, 1, 1));
+  test.deepEqual(time.utcMonth.range(date.utc(2010, 10, 30), date.utc(2011, 2, 1))[2], date.utc(2011, 1, 1));
   test.end();
 });
 

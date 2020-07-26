@@ -3,7 +3,7 @@ import diff from "./diff.js";
 
 var daysInWeek = 7; // NOTE: This assumes Gregorian calendar
 
-function weekday(i) {
+export function weekday(i) {
   return interval(function(dateTime) {
     var dayAdjust = (dateTime.dayOfWeek + daysInWeek - i) % daysInWeek;
     var dt = dayAdjust ? dateTime.minus({ days: dayAdjust }) : dateTime;

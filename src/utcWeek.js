@@ -1,16 +1,4 @@
-import interval from "./interval.js";
-import {durationWeek} from "./duration.js";
-
-function utcWeekday(i) {
-  return interval(function(date) {
-    date.setUTCDate(date.getUTCDate() - (date.getUTCDay() + 7 - i) % 7);
-    date.setUTCHours(0, 0, 0, 0);
-  }, function(date, step) {
-    date.setUTCDate(date.getUTCDate() + step * 7);
-  }, function(start, end) {
-    return (end - start) / durationWeek;
-  });
-}
+import { weekday as utcWeekday } from "./week.js";
 
 export var utcSunday = utcWeekday(0);
 export var utcMonday = utcWeekday(1);
