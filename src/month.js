@@ -7,7 +7,7 @@ var month = interval(function(dateTime) {
   if (step < 0) return dateTime.minus({ months: -step });
   return dateTime.plus({ months: step });
 }, function(start, end) {
-  return diff(start, end, 'months');
+  return diff(start, end, 'months', 'months');
 }, function(dateTime) {
   return dateTime.month - 1;
 });

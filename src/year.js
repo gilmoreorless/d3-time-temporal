@@ -7,7 +7,7 @@ var year = interval(function(dateTime) {
   if (step < 0) return dateTime.minus({ years: -step });
   return dateTime.plus({ years: step });
 }, function(start, end) {
-  return diff(start, end, 'years');
+  return diff(start, end, 'years', 'years');
 }, function(dateTime) {
   return dateTime.year;
 });

@@ -69,7 +69,7 @@ export default function newInterval(floori, offseti, count, field) {
           : !(step > 1) ? interval
           : interval.filter(field
               ? function(d) { return field(d) % step === 0; }
-              : function(d) { return interval.count(0, d) % step === 0; });
+              : function(d) { return interval.count(new Temporal.DateTime(0, 1, 1), d) % step === 0; });
     };
   }
 
