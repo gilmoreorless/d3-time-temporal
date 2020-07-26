@@ -1,14 +1,18 @@
 import interval from "./interval.js";
-import {durationMinute, durationWeek} from "./duration.js";
+import diff from "./diff.js";
+
+var daysInWeek = 7; // NOTE: This assumes Gregorian calendar
 
 function weekday(i) {
-  return interval(function(date) {
-    date.setDate(date.getDate() - (date.getDay() + 7 - i) % 7);
-    date.setHours(0, 0, 0, 0);
-  }, function(date, step) {
-    date.setDate(date.getDate() + step * 7);
+  return interval(function(dateTime) {
+    var dayAdjust = (dateTime.dayOfWeek + daysInWeek - i) % daysInWeek;
+    var dt = dayAdjust ? dateTime.minus({ days: dayAdjust }) : dateTime;
+    return dt.with({ hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0, nanosecond: 0 });
+  }, function(dateTime, step) {
+    if (step < 0) return dateTime.minus({ days: -step * daysInWeek });
+    return dateTime.plus({ days: step * daysInWeek });
   }, function(start, end) {
-    return (end - start - (end.getTimezoneOffset() - start.getTimezoneOffset()) * durationMinute) / durationWeek;
+    return diff(start, end, 'days') / daysInWeek;
   });
 }
 

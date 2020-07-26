@@ -106,22 +106,24 @@ tape("timeSunday.range(start, stop) returns Sundays", function(test) {
   test.end();
 });
 
-tape("timeSunday.range(start, stop) coerces start and stop to dates", function(test) {
-  test.deepEqual(time.timeSunday.range(+date.local(2011, 11, 01), +date.local(2012, 00, 15)), [
-    date.local(2011, 11, 04),
-    date.local(2011, 11, 11),
-    date.local(2011, 11, 18),
-    date.local(2011, 11, 25),
-    date.local(2012, 00, 01),
-    date.local(2012, 00, 08)
-  ]);
-  test.end();
-});
+// DISABLED: I'm not doing coercion in this experiment
+// tape("timeSunday.range(start, stop) coerces start and stop to dates", function(test) {
+//   test.deepEqual(time.timeSunday.range(+date.local(2011, 11, 01), +date.local(2012, 00, 15)), [
+//     date.local(2011, 11, 04),
+//     date.local(2011, 11, 11),
+//     date.local(2011, 11, 18),
+//     date.local(2011, 11, 25),
+//     date.local(2012, 00, 01),
+//     date.local(2012, 00, 08)
+//   ]);
+//   test.end();
+// });
 
-tape("timeSunday.range(start, stop) returns the empty array for invalid dates", function(test) {
-  test.deepEqual(time.timeSunday.range(new Date(NaN), Infinity), []);
-  test.end();
-});
+// DISABLED: Temporal doesn't allow invalid dates like NaN
+// tape("timeSunday.range(start, stop) returns the empty array for invalid dates", function(test) {
+//   test.deepEqual(time.timeSunday.range(new Date(NaN), Infinity), []);
+//   test.end();
+// });
 
 tape("timeSunday.range(start, stop) returns the empty array if start >= stop", function(test) {
   test.deepEqual(time.timeSunday.range(date.local(2011, 11, 10), date.local(2011, 10, 04)), []);
