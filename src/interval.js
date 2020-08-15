@@ -16,12 +16,13 @@ export default function newInterval(floori, offseti, count, field) {
   };
 
   interval.round = function(dateTime) {
-    var base = interval(dateTime);
-    var d0 = dateTime.difference(base),
-        d1 = interval.ceil(dateTime).difference(dateTime);
+    var lower = interval(dateTime),
+        upper = interval.ceil(dateTime),
+        d0 = dateTime.difference(lower),
+        d1 = upper.difference(dateTime);
     // NOTE: Why no Duration compare? https://github.com/tc39/proposal-temporal/issues/608
-    var comp = Temporal.DateTime.compare(base.plus(d0), base.plus(d1));
-    return comp < 0 ? d0 : d1;
+    var comp = Temporal.DateTime.compare(lower.plus(d0), lower.plus(d1));
+    return comp < 0 ? lower : upper;
   };
 
   interval.offset = function(dateTime, step) {
