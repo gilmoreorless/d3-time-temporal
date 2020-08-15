@@ -28,7 +28,7 @@
     "src/**/*.js"
   ],
   "scripts": {
-    "postinstall": "patch-package",
+    "postinstall": "[[ $PWD = $INIT_CWD ]] && patch-package || echo ''",
     "pretest": "rollup -c",
     "test": "TZ=America/Los_Angeles tape 'test/**/*-test.js' && eslint src",
     "prepublishOnly": "rm -rf dist && yarn test",
