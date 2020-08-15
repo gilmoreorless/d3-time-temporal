@@ -1,0 +1,20 @@
+diff --git a/node_modules/object-inspect/index.js b/node_modules/object-inspect/index.js
+index 61176bb..d24f57c 100644
+--- a/node_modules/object-inspect/index.js
++++ b/node_modules/object-inspect/index.js
+@@ -134,10 +134,13 @@ module.exports = function inspect_(obj, options, depth, seen) {
+         return '{ [' + String(obj) + '] ' + parts.join(', ') + ' }';
+     }
+     if (typeof obj === 'object' && customInspect) {
++        var customOpts = {
++            stylize: function (str) { return str; }
++        };
+         if (inspectSymbol && typeof obj[inspectSymbol] === 'function') {
+-            return obj[inspectSymbol]();
++            return obj[inspectSymbol](depth, customOpts);
+         } else if (typeof obj.inspect === 'function') {
+-            return obj.inspect();
++            return obj.inspect(depth, customOpts);
+         }
+     }
+     if (isMap(obj)) {

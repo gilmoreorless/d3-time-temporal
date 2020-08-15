@@ -1,0 +1,17 @@
+diff --git a/node_modules/deep-equal/index.js b/node_modules/deep-equal/index.js
+index 9773887..5812e70 100644
+--- a/node_modules/deep-equal/index.js
++++ b/node_modules/deep-equal/index.js
+@@ -277,6 +277,12 @@ function objEquiv(a, b, opts, channel) {
+ 
+   if ($objToString(a) !== $objToString(b)) { return false; }
+ 
++  // START PATCH: Temporal
++  if ($objToString(a).startsWith('[object Temporal.')) {
++    if (a.toString() !== b.toString()) { return false; }
++  }
++  // END PATCH: Temporal
++
+   if (isArguments(a) !== isArguments(b)) { return false; }
+ 
+   var aIsArray = isArray(a);
