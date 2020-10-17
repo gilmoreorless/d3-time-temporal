@@ -1450,10 +1450,10 @@ progress@^2.0.0:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-proposal-temporal@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/proposal-temporal/-/proposal-temporal-0.3.1.tgz#d58819b625266b577e6a47201caaa99aacfd059b"
-  integrity sha512-u+Bzt7U1h9rvXBwRmlBgX/FiHWGtmGdcp1xzkGlU6xSctFn85rBbnTkhrSgQnwgVUCh//uzW/rP6v3oiUOK22Q==
+proposal-temporal@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/proposal-temporal/-/proposal-temporal-0.4.0.tgz#74fc97e97cc443ca74892b84c9996191d559968f"
+  integrity sha512-5BzLBcxfHdVM2TUUzD2m5xGy5h1MM+5mPekvq6gC3R98UrIlF2zcc1B1QKisU5SG5spyhGXrqYjnopt8jampFQ==
   dependencies:
     big-integer "^1.6.48"
     es-abstract "^1.17.6"
