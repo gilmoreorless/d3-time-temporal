@@ -8,6 +8,7 @@ export default function intervalFactory(unit, floori) {
   var unitPlural = `${unit}s`;
   var diffLargestUnit = (unit === 'year' || unit === 'month') ? unitPlural : 'days';
   var fieldOffset = (unit === 'month' || unit === 'day') ? 1 : 0;
+  var roundingUnit = (unit === 'year' || unit === 'month') ? undefined : unit;
 
   return interval(floori, function(dateTime, step) {
     if (step < 0) return dateTime.minus({ [unitPlural]: -step });
@@ -16,5 +17,5 @@ export default function intervalFactory(unit, floori) {
     return diff(start, end, unitPlural, diffLargestUnit);
   }, function(dateTime) {
     return dateTime[unit] - fieldOffset;
-  });
+  }, roundingUnit);
 }

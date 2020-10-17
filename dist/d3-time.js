@@ -7,7 +7,7 @@ typeof define === 'function' && define.amd ? define(['exports'], factory) :
 
 const { Temporal } = require("proposal-temporal");
 
-function newInterval(floori, offseti, count, field) {
+function newInterval(floori, offseti, count, field, roundingUnit) {
 
   function interval(dateTime) {
     return floori(arguments.length === 0 ? Temporal.now.dateTime() : dateTime);
@@ -23,6 +23,9 @@ function newInterval(floori, offseti, count, field) {
   };
 
   interval.round = function(dateTime) {
+    if (roundingUnit) {
+      return dateTime.round({ smallestUnit: roundingUnit });
+    }
     var lower = interval(dateTime),
         upper = interval.ceil(dateTime),
         d0 = dateTime.difference(lower),
@@ -84,15 +87,9 @@ function newInterval(floori, offseti, count, field) {
   return interval;
 }
 
-const { Temporal: Temporal$1 } = require("proposal-temporal");
-
 function diff(start, end, field, largestUnit = 'days') {
-  var comp = Temporal$1.DateTime.compare(start, end),
-    swap = comp > 0,
-    dt1 = swap ? end : start,
-    dt2 = swap ? start : end,
-    value = dt2.difference(dt1, { largestUnit })[field];
-  return value * (swap ? -1 : 1);
+  var diff = end.difference(start, { largestUnit });
+  return diff[field];
 }
 
 /**
@@ -102,6 +99,7 @@ function intervalFactory(unit, floori) {
   var unitPlural = `${unit}s`;
   var diffLargestUnit = (unit === 'year' || unit === 'month') ? unitPlural : 'days';
   var fieldOffset = (unit === 'month' || unit === 'day') ? 1 : 0;
+  var roundingUnit = (unit === 'year' || unit === 'month') ? undefined : unit;
 
   return newInterval(floori, function(dateTime, step) {
     if (step < 0) return dateTime.minus({ [unitPlural]: -step });
@@ -110,7 +108,7 @@ function intervalFactory(unit, floori) {
     return diff(start, end, unitPlural, diffLargestUnit);
   }, function(dateTime) {
     return dateTime[unit] - fieldOffset;
-  });
+  }, roundingUnit);
 }
 
 var millisecond = intervalFactory('millisecond', function(dateTime) {

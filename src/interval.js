@@ -1,6 +1,6 @@
 const { Temporal } = require("proposal-temporal");
 
-export default function newInterval(floori, offseti, count, field) {
+export default function newInterval(floori, offseti, count, field, roundingUnit) {
 
   function interval(dateTime) {
     return floori(arguments.length === 0 ? Temporal.now.dateTime() : dateTime);
@@ -16,6 +16,9 @@ export default function newInterval(floori, offseti, count, field) {
   };
 
   interval.round = function(dateTime) {
+    if (roundingUnit) {
+      return dateTime.round({ smallestUnit: roundingUnit });
+    }
     var lower = interval(dateTime),
         upper = interval.ceil(dateTime),
         d0 = dateTime.difference(lower),
