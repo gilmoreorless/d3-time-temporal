@@ -20,7 +20,7 @@ tape("timeInterval(floor, offset) returns a custom time interval", function(test
   var i = time.timeInterval(function(dateTime) {
     return dateTime.with({ minute: 0, second: 0, millisecond: 0, microsecond: 0, nanosecond: 0 });
   }, function(dateTime, step) {
-    return dateTime.plus({ hours: step });
+    return dateTime.add({ hours: step });
   });
   test.deepEqual(i(date.utc(2015, 0, 1, 12, 34, 56, 789)), date.utc(2015, 0, 1, 12));
   test.end();
@@ -30,7 +30,7 @@ tape("timeInterval(floor, offset) does not define a count method", function(test
   var i = time.timeInterval(function(dateTime) {
     return dateTime.with({ minute: 0, second: 0, millisecond: 0, microsecond: 0, nanosecond: 0 });
   }, function(dateTime, step) {
-    return dateTime.plus({ hours: step });
+    return dateTime.add({ hours: step });
   });
   test.ok(!("count" in i));
   test.end();
@@ -41,7 +41,7 @@ tape("timeInterval(floor, offset) floors the step before passing it to offset", 
     return dateTime.with({ minute: 0, second: 0, millisecond: 0, microsecond: 0, nanosecond: 0 });
   }, function(dateTime, step) {
     steps.push(+step)
-    return dateTime.plus({ hours: step });
+    return dateTime.add({ hours: step });
   });
   test.deepEqual(i.offset(date.utc(2015, 0, 1, 12, 34, 56, 789), 1.5), date.utc(2015, 0, 1, 13, 34, 56, 789));
   test.deepEqual(i.range(date.utc(2015, 0, 1, 12), date.utc(2015, 0, 1, 15), 1.5), [date.utc(2015, 0, 1, 12), date.utc(2015, 0, 1, 13), date.utc(2015, 0, 1, 14)]);
@@ -53,7 +53,7 @@ tape("timeInterval(floor, offset, count) defines a count method", function(test)
   var i = time.timeInterval(function(dateTime) {
     return dateTime.with({ minute: 0, second: 0, millisecond: 0, microsecond: 0, nanosecond: 0 });
   }, function(dateTime, step) {
-    return dateTime.plus({ hours: step });
+    return dateTime.add({ hours: step });
   }, function(start, end) {
     return end.since(start).hours;
   });

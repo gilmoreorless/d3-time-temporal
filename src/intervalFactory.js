@@ -11,8 +11,8 @@ export default function intervalFactory(unit, floori) {
   var roundingUnit = (unit === 'year' || unit === 'month') ? undefined : unit;
 
   return interval(floori, function(dateTime, step) {
-    if (step < 0) return dateTime.minus({ [unitPlural]: -step });
-    return dateTime.plus({ [unitPlural]: step });
+    if (step < 0) return dateTime.subtract({ [unitPlural]: -step });
+    return dateTime.add({ [unitPlural]: step });
   }, function(start, end) {
     return diff(start, end, unitPlural, diffLargestUnit);
   }, function(dateTime) {

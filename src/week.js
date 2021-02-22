@@ -6,11 +6,11 @@ var daysInWeek = 7; // NOTE: This assumes Gregorian calendar
 export function weekday(i) {
   return interval(function(dateTime) {
     var dayAdjust = (dateTime.dayOfWeek + daysInWeek - i) % daysInWeek;
-    var dt = dayAdjust ? dateTime.minus({ days: dayAdjust }) : dateTime;
+    var dt = dayAdjust ? dateTime.subtract({ days: dayAdjust }) : dateTime;
     return dt.with({ hour: 0, minute: 0, second: 0, millisecond: 0, microsecond: 0, nanosecond: 0 });
   }, function(dateTime, step) {
-    if (step < 0) return dateTime.minus({ days: -step * daysInWeek });
-    return dateTime.plus({ days: step * daysInWeek });
+    if (step < 0) return dateTime.subtract({ days: -step * daysInWeek });
+    return dateTime.add({ days: step * daysInWeek });
   }, function(start, end) {
     return diff(start, end, 'days') / daysInWeek;
   });
