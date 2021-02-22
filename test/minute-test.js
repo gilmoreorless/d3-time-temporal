@@ -104,7 +104,7 @@ tape("timeMinute.every(step) returns every stepth minute, starting with the firs
   test.end();
 });
 
-// DISABLED: Irrelevant when using Temporal.DateTime
+// DISABLED: Irrelevant when using Temporal.PlainDateTime
 // tape("timeMinute.range(start, stop) returns every minute crossing the daylight savings boundary", function(test) {
 //   test.deepEqual(time.timeMinute.range(new Date(1478422800000 - 2 * 6e4), new Date(1478422800000 + 2 * 6e4)), [
 //     new Date(1478422680000), // Sun Nov 06 2016 01:58:00 GMT-0700 (PDT)

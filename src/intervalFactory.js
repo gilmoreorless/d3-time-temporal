@@ -2,7 +2,7 @@ import interval from "./interval.js";
 import diff from "./diff.js";
 
 /**
- * A helper to de-deduplicate the common interval cases when using Temporal.DateTime
+ * A helper to de-deduplicate the common interval cases when using Temporal.PlainDateTime
  */
 export default function intervalFactory(unit, floori) {
   var unitPlural = `${unit}s`;

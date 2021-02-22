@@ -118,7 +118,7 @@ tape("timeHour.range(start, stop) can skip hours", function(test) {
   test.end();
 });
 
-// DISABLED: Irrelevant when using Temporal.DateTime
+// DISABLED: Irrelevant when using Temporal.PlainDateTime
 // tape("timeHour.range(start, stop) observes start of daylight savings time", function(test) {
 //   test.deepEqual(time.timeHour.range(date.local(2011, 2, 13, 1), date.local(2011, 2, 13, 5)), [
 //     date.utc(2011, 2, 13, 9),
@@ -143,7 +143,7 @@ tape("timeHour.every(step) returns every stepth hour, starting with the first ho
   test.end();
 });
 
-// DISABLED: Irrelevant when using Temporal.DateTime
+// DISABLED: Irrelevant when using Temporal.PlainDateTime
 // tape("timeHour.range(start, stop) returns every hour crossing the daylight savings boundary", function(test) {
 //   test.deepEqual(time.timeHour.range(new Date(1478422800000 - 2 * 36e5), new Date(1478422800000 + 2 * 36e5)), [
 //     new Date(1478415600000), // Sun Nov 06 2016 00:00:00 GMT-0700 (PDT)

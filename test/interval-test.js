@@ -4,14 +4,14 @@ var tape = require("tape"),
 
 const { Temporal } = require("proposal-temporal");
 
-tape("timeInterval() is equivalent to timeInterval.floor(Temporal.now.dateTime())", function(test) {
-  var t = Temporal.now.dateTime();
+tape("timeInterval() is equivalent to timeInterval.floor(Temporal.now.plainDateTimeISO())", function(test) {
+  var t = Temporal.now.plainDateTimeISO();
   test.deepEqual(time.timeYear(), time.timeYear.floor(t));
   test.end();
 });
 
 tape("timeInterval(date) is equivalent to timeInterval.floor(date)", function(test) {
-  var t = Temporal.now.dateTime();
+  var t = Temporal.now.plainDateTimeISO();
   test.deepEqual(time.timeYear(t), time.timeYear.floor(t));
   test.end();
 });

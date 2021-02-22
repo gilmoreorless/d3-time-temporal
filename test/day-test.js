@@ -9,14 +9,14 @@ tape("timeDays in an alias for timeDay.range", function(test) {
   test.end();
 });
 
-tape("timeDay() is equivalent to timeDay.floor(Temporal.now.dateTime())", function(test) {
-  var t = Temporal.now.dateTime();
+tape("timeDay() is equivalent to timeDay.floor(Temporal.now.plainDateTimeISO())", function(test) {
+  var t = Temporal.now.plainDateTimeISO();
   test.deepEqual(time.timeDay(), time.timeDay.floor(t));
   test.end();
 });
 
-tape("timeDay(Temporal.DateTime) is equivalent to timeDay.floor(Temporal.DateTime)", function(test) {
-  var t = Temporal.now.dateTime();
+tape("timeDay(Temporal.PlainDateTime) is equivalent to timeDay.floor(Temporal.PlainDateTime)", function(test) {
+  var t = Temporal.now.plainDateTimeISO();
   test.deepEqual(time.timeDay(t), time.timeDay.floor(t));
   test.end();
 });

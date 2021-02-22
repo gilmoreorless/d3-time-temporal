@@ -3,7 +3,7 @@ const { Temporal } = require("proposal-temporal");
 export default function newInterval(floori, offseti, count, field, roundingUnit) {
 
   function interval(dateTime) {
-    return floori(arguments.length === 0 ? Temporal.now.dateTime() : dateTime);
+    return floori(arguments.length === 0 ? Temporal.now.plainDateTimeISO() : dateTime);
   }
 
   interval.floor = function(dateTime) {
@@ -24,7 +24,7 @@ export default function newInterval(floori, offseti, count, field, roundingUnit)
         d0 = dateTime.difference(lower),
         d1 = upper.difference(dateTime);
     // NOTE: Why no Duration compare? https://github.com/tc39/proposal-temporal/issues/608
-    var comp = Temporal.DateTime.compare(lower.plus(d0), lower.plus(d1));
+    var comp = Temporal.PlainDateTime.compare(lower.plus(d0), lower.plus(d1));
     return comp < 0 ? lower : upper;
   };
 
@@ -34,15 +34,15 @@ export default function newInterval(floori, offseti, count, field, roundingUnit)
 
   interval.range = function(start, stop, step) {
     var range = [], previous;
-    if (!(start instanceof Temporal.DateTime) || !(stop instanceof Temporal.DateTime)) return range;
+    if (!(start instanceof Temporal.PlainDateTime) || !(stop instanceof Temporal.PlainDateTime)) return range;
     start = interval.ceil(start);
     step = step == null ? 1 : Math.floor(step);
-    if (Temporal.DateTime.compare(start, stop) >= 0 || !(step > 0)) return range;
+    if (Temporal.PlainDateTime.compare(start, stop) >= 0 || !(step > 0)) return range;
     previous = start;
     do {
       range.push(previous);
       previous = floori(offseti(previous, step));
-    } while (Temporal.DateTime.compare(previous, stop) < 0);
+    } while (Temporal.PlainDateTime.compare(previous, stop) < 0);
     return range;
   };
 
@@ -73,7 +73,7 @@ export default function newInterval(floori, offseti, count, field, roundingUnit)
           : !(step > 1) ? interval
           : interval.filter(field
               ? function(d) { return field(d) % step === 0; }
-              : function(d) { return interval.count(new Temporal.DateTime(0, 1, 1), d) % step === 0; });
+              : function(d) { return interval.count(new Temporal.PlainDateTime(0, 1, 1), d) % step === 0; });
     };
   }
 
