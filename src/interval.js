@@ -21,8 +21,8 @@ export default function newInterval(floori, offseti, count, field, roundingUnit)
     }
     var lower = interval(dateTime),
         upper = interval.ceil(dateTime),
-        d0 = dateTime.difference(lower),
-        d1 = upper.difference(dateTime);
+        d0 = dateTime.since(lower),
+        d1 = upper.since(dateTime);
     // NOTE: Why no Duration compare? https://github.com/tc39/proposal-temporal/issues/608
     var comp = Temporal.PlainDateTime.compare(lower.plus(d0), lower.plus(d1));
     return comp < 0 ? lower : upper;

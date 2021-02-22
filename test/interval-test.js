@@ -55,7 +55,7 @@ tape("timeInterval(floor, offset, count) defines a count method", function(test)
   }, function(dateTime, step) {
     return dateTime.plus({ hours: step });
   }, function(start, end) {
-    return end.difference(start).hours;
+    return end.since(start).hours;
   });
   test.equal(i.count(date.utc(2015, 0, 1, 12, 34), date.utc(2015, 0, 1, 15, 56)), 3);
   test.end();
@@ -68,7 +68,7 @@ tape("timeInterval(floor, offset, count) floors dates before passing them to cou
     date.setUTCHours(date.getUTCHours() + step);
   }, function(start, end) {
     dates.push(start, end);
-    return end.difference(start).hours;
+    return end.since(start).hours;
   });
   i.count(date.utc(2015, 0, 1, 12, 34), date.utc(2015, 0, 1, 15, 56));
   test.deepEqual(dates, [date.utc(2015, 0, 1, 12), date.utc(2015, 0, 1, 15)]);
